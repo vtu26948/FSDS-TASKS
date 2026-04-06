@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Automated Logging System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+
+        th {
+            background-color: #4facfe;
+            color: white;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 15px;
+            background: #4facfe;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #007acc;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Automated Logging System</h1>
+    <p>Using Triggers & Views (Audit Logging)</p>
+</header>
+
+<div class="container">
+
+    <!-- Trigger Info -->
+    <div class="card">
+        <h2>Trigger Function</h2>
+        <p>
+            A database trigger automatically logs every INSERT or UPDATE operation.
+            This helps maintain audit trails in enterprise systems.
+        </p>
+        <pre>
+CREATE TRIGGER log_changes
+AFTER INSERT OR UPDATE ON users
+FOR EACH ROW
+INSERT INTO audit_log(user_id, action, timestamp)
+VALUES (NEW.id, 'INSERT/UPDATE', NOW());
+        </pre>
+    </div>
+
+    <!-- View Info -->
+    <div class="card">
+        <h2>Daily Activity View</h2>
+        <p>
+            A view is created to display daily activity reports.
+        </p>
+        <pre>
+CREATE VIEW daily_report AS
+SELECT DATE(timestamp) AS date,
+COUNT(*) AS total_actions
+FROM audit_log
+GROUP BY DATE(timestamp);
+        </pre>
+    </div>
+
+    <!-- Log Table -->
+    <div class="card">
+        <h2>Audit Log Table</h2>
+        <table>
+            <tr>
+                <th>User ID</th>
+                <th>Action</th>
+                <th>Timestamp</th>
+            </tr>
+            <tr>
+                <td>101</td>
+                <td>INSERT</td>
+                <td>2026-04-02 10:30:00</td>
+            </tr>
+            <tr>
+                <td>102</td>
+                <td>UPDATE</td>
+                <td>2026-04-02 11:15:00</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Daily Report -->
+    <div class="card">
+        <h2>Daily Activity Report</h2>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Total Actions</th>
+            </tr>
+            <tr>
+                <td>2026-04-02</td>
+                <td>2</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Button -->
+    <div class="card">
+        <button onclick="alert('Simulating Insert/Update with Trigger Logging!')">
+            Simulate Activity
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>
